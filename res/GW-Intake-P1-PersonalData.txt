@@ -1,0 +1,207 @@
+
+What kind of ERP/CRM system does Goodwill Industries use? For case management?
+
+It appears that they use Paylocity (FE) on the front end and may use GreenHouse
+or BambooHR for their ATS.
+
+---------------
+
+please provide a script to extract data values and tags from a
+pdf form to a JSON format using both python and javascript
+
+
+
+Extracting Data from PDF Forms
+Here's an approach to extract data and tags from a PDF form into JSON format,
+using both Python and Javascript. It's important to note that achieving this
+functionality can be complex and might not work perfectly with all PDF forms
+due to variations in format.
+
+1. Python using PyPDF2 and json libraries:
+
+Python
+import json
+from PyPDF2 import PdfReader
+
+def extract_pdf_data(filename):
+  """
+  Extracts data and field names from a PDF form.
+
+  Args:
+      filename: Path to the PDF form file.
+
+  Returns:
+      A dictionary containing extracted data or None if extraction fails.
+  """
+  try:
+    reader = PdfReader(filename)
+    form_data = {}
+    for field_name, field in reader.acroForm.fields.items():
+      if field.get_annot().is_hidden:
+        continue  # Skip hidden fields
+      if field.get_annot().FT == b'/Btn':  # Handle buttons separately
+        form_data[field_name] = "Button"
+      else:
+        value = field.get_value() or ""  # Get value or empty string
+        form_data[field_name] = value
+    return form_data
+  except Exception as e:
+    print(f"Error extracting data: {e}")
+    return None
+
+# Example usage
+data = extract_pdf_data("your_form.pdf")
+if data:
+  with open("extracted_data.json", "w") as outfile:
+    json.dump(data, outfile, indent=4)
+  print("Data extraction successful!")
+else:
+  print("Failed to extract data from PDF form.")
+Use code with caution.
+content_copy
+This script uses PyPDF2 to access the PDF form fields and extract their
+names and values. It then converts the extracted data to a dictionary and
+saves it as a JSON file.
+
+2. Javascript (Limited Functionality):
+
+Due to limitations in browser environments for security reasons, directly extracting data from a local PDF file using Javascript is generally not possible. However, you can achieve a similar effect for online forms using Javascript libraries like PDF.js. Here's a simplified example (not recommended for production use):
+
+JavaScript
+async function extractFormData(url) {
+  // Load the PDF document
+  const pdfDoc = await PDFJS.getDocument(url);
+
+  // Get the first page (adjust as needed)
+  const page = await pdfDoc.getPage(1);
+
+  // Extract text content (might not capture field data well)
+  const textContent = await page.getTextContent();
+
+  // Basic parsing (replace with more sophisticated logic)
+  const formData = {};
+  for (const item of textContent.items) {
+    const [fieldName, value] = item.str.split(":");
+    if (fieldName && value) {
+      formData[fieldName.trim()] = value.trim();
+    }
+  }
+
+  return formData;
+}
+
+// Example usage (replace with actual form URL)
+const formUrl = "https://example.com/form.pdf";
+
+extractFormData(formUrl)
+.then(data => console.log(data))
+.catch(error => console.error(error));
+Use code with caution.
+content_copy
+This script utilizes PDF.js to fetch and partially parse the PDF content. Note that this approach is unreliable for extracting data from fillable forms and might only capture visible text. It's more suitable for simple text-based PDFs.
+
+Remember:
+
+These are simplified examples and might require adjustments based on specific PDF structures.
+Consider using dedicated PDF form processing libraries or tools for more robust solutions.
+
+-------------
+
+
+
+Intake Form
+Scan Card #
+Entered In WFC:
+112
+9 Goodwill
+SAN FRANCISCO BAY
+Entered in CT
+The information collected in this form will be kept confidential and will be used to help us provide services that best meet your employment-related needs Please note that all fields marked with on asterisk (*) are required; all other information con be considered optional. We appreciate your efforts to fill out this form as completely as possible Thank you for your cooperation
+JK Please initial here if you would like us to share this form with San Francisco Human Services Agency to assess
+eligibility for additional benefits and services such as cash aid, CalFresh, CalWORKs, and Medi-Cal.
+Contact Information
+Name KELLY
+
+Last
+Address* 401
+JOSEPH
+First
+City SAN FRANCISCO
+Middle Initial
+State CA Zip 94107
+Home Cell Work Other Do not have
+JP ST Preferred Phone 415-857-8265 Secondary Phone 628.313.098 9 Email Address* JOSEPH KELLY. RESUME@GMAIL.COM
+Social Security Number 01052.5813
+Alternate/Emergency Contact Info. Name: Thomas
+Tell us about yourself...
+USCIS status*
+Citizen
+No Citizen
+Resident
+Type of Address*
+Owner Renting
+Friend or relative
+A#
+D HomeCellWork Other Do not have
+Birthdate 04102/1971
+(MM) (DD) Phone:
+Monaghara Phone: 415-756-4602
+I am currently"
+Employed full-time Employed part-time Not employed Self Employed Student
+I am DMarried
+Single/Separated Number of dependents
+Shelter
+Gender*
+Transitional Housing Homeless
+Male Female
+Trans Male
+Trans Female
+Ages
+Genderqueer/Gender Non-Binary Unspecified
+Race/Ethnicity* White/Caucasian Middle Eastern
+Hawaiian
+Samoan
+Guamanian
+(Select one or more)
+Other Pacific Islander Black/African American
+Korean
+Laotian
+Asian
+Cambodian
+Vietnamese
+Chinese
+Japanese
+Filipino
+Primary Language/Language Spoken at Home (check one)
+English
+Spanish
+Russian
+Cantonese
+Mandarin Arabic
+Tagalog
+ASL
+D Vietnamese
+Other Asian
+American Indian/Alaskan Native Other
+Ethnicity (Select one)
+Hispanic/Latino(a) Yes No
+□ Japanese Korean Other
+Education What is the highest grade level you completed? ( 0 to 18, where 12 is high
+                                                          school graduate) 16 College: DCERT D LIC AA DBA BS OMA ODR
+Major: MATH / Couputer Science
+Certificates: DOSHA OCNA GUARD CARD FORKLIFT
+FOOD HANDLER DOTHER
+Driver's License #: A5839916
+(rok class) DA OB OC
+starte ID, eligible for D.L.
+Veteran
+Offender/Ex-Offender
+Disabilities
+If yes, please specify.
+Receiving Public assistance?
+If yes, please specify:
+Yes No O Yes No
+O Yes No
+Yes No
+CalFresh □ CalWORKs GAI□ MediCal
+SSI Other
